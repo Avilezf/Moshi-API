@@ -22,8 +22,8 @@ const userGet = async (req = request, res = response) => {
     let user;
     await pool
         .query(select, [uid])
-        .then(res => {
-            const auxUser = res.rows[0];
+        .then(rest => {
+            const auxUser = rest.rows[0];
             if (typeof auxUser != 'undefined') {
                 user = new User(auxUser.username, auxUser.password, auxUser.role, auxUser.status, auxUser.email, auxUser.registerdate, auxUser.firstname, auxUser.lastname, auxUser.birthday, auxUser.shippinginfo, auxUser.creditinfo, auxUser.googleauth, auxUser.userid);
             } else {
