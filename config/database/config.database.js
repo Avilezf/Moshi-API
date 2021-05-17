@@ -1,5 +1,5 @@
 const { Pool,  Client } = require('pg')
-const connectionString = process.env.PG_CONNECTION
+const connectionString = process.env.DATABASE_URL
 
 
  function dbConnection() {
