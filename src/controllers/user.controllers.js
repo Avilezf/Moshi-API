@@ -8,6 +8,7 @@ const { dbConnection } = require('../../config/database/config.database');
 
 const insert = 'INSERT INTO users (username, password, role, email, status, registerDate, firstName, lastName, birthday, shippingInfo, creditInfo, googleAuth) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)'
 const select = 'select * from users where username = $1';
+const select2 = 'select * from users where userid = $1'
 const update = 'UPDATE users SET username = $1, password = $2, role = $3, email = $4, status = $5, registerDate = $6 ,firstName = $7, lastName = $8, birthday = $9, shippingInfo = $10,  creditInfo = $11, googleAuth = $12 where userid = $13';
 
 const pool = dbConnection();
@@ -21,11 +22,16 @@ const userGet = async (req = request, res = response) => {
     //Search user in the database
     let user;
     await pool
-        .query(select, [uid])
+        .query(select2, [uid])
         .then(rest => {
             const auxUser = rest.rows[0];
             if (typeof auxUser != 'undefined') {
                 user = new User(auxUser.username, auxUser.password, auxUser.role, auxUser.status, auxUser.email, auxUser.registerdate, auxUser.firstname, auxUser.lastname, auxUser.birthday, auxUser.shippinginfo, auxUser.creditinfo, auxUser.googleauth, auxUser.userid);
+                let userJSON = user.toJSON();
+                return res.json({
+                    userJSON
+                });
+
             } else {
                 return res.status(401).json({
                     msg: 'Token invalid - user not exists in the DB'
@@ -34,10 +40,8 @@ const userGet = async (req = request, res = response) => {
 
         })
         .catch(e => console.error(e.stack));
-        let userJSON = user.toJSON();
-    return res.json({
-        userJSON
-    });
+
+
 }
 
 //POST

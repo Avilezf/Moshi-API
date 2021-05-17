@@ -18,7 +18,6 @@ const validationJWT = async(req = request, res = response, next) => {
     try {
 
         const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
-
         //Search user in the database
         let user;
         const pool = dbConnection();

@@ -3,3 +3,4 @@ node_modules/
 .env
 
 moshi-api/
+config/database/config.database.js
