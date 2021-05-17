@@ -140,6 +140,22 @@ class User {
 
     //To JSON
     toJSON() {
+        return JSON.parse(JSON.stringify({
+            userid: this.userId,
+            username: this.username,
+            password: this.password,
+            role: this.role,
+            email: this.email,
+            status: this.status,
+            registerDate: this.registerDate,
+            firstname: this.firstName,
+            lastname: this.lastName,
+            birthday: this.birthday,
+            shippingInfo: this.shippingInfo,
+            creditInfo: this.creditInfo,
+            googleAuth: this.googleAuth
+        }))
+
 
     }
 

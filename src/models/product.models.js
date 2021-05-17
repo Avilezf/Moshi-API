@@ -107,22 +107,6 @@ class Product {
 
     //Value
     //To JSON
-    toJSON2() {
-        return JSON.stringify({
-            productid: this.productid,
-            collection: this.collection,
-            editorial: this.editorial,
-            isbn: this.isbn,
-            title: this.title,
-            author: this.author,
-            price: this.price,
-            quantity: this.quantity,
-            category: this.category,
-            rating: this.rating
-        })
-
-
-    }
 
     toJSON() {
         return JSON.parse(JSON.stringify({

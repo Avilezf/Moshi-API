@@ -14,7 +14,10 @@ const { validation } = require('../middleware/validation');
 const { validationJWT } = require('../middleware/validation-jwt');
 
 
-router.get('/', userGet);
+router.get('/',[
+    validationJWT,
+    validation
+], userGet);
 
 router.put('/:username', [
     check('username', 'username is required').not().isEmpty(),

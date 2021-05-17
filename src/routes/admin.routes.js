@@ -14,7 +14,7 @@ const { validation,
 const { verifyBook } = require('../helpers/db-validators');
 
 
-router.put('/editBook:productid', [
+router.put('/editBook/:productid', [
     check('productid', 'product is required').not().isEmpty(),
     check('collection', 'collection is required').not().isEmpty(),
     check('editorial', 'editorial is required').not().isEmpty(),

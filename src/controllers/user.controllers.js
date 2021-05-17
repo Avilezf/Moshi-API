@@ -9,16 +9,32 @@ const insert = 'INSERT INTO users (username, password, role, email, status, regi
 const select = 'select * from users where username = $1';
 const update = 'UPDATE users SET username = $1, password = $2, role = $3, email = $4, status = $5, registerDate = $6 ,firstName = $7, lastName = $8, birthday = $9, shippingInfo = $10,  creditInfo = $11, googleAuth = $12 where userid = $13';
 
-
+const pool = dbConnection();
 //Get
-const userGet = (req = request, res = response) => {
+const userGet = async (req = request, res = response) => {
 
-    let id = req.params;
+    const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
-        res.json({
-            msg: 'get API - controlador',
+    //Search user in the database
+    let user;
+    await pool
+        .query(select, [uid])
+        .then(res => {
+            const auxUser = res.rows[0];
+            if (typeof auxUser != 'undefined') {
+                user = new User(auxUser.username, auxUser.password, auxUser.role, auxUser.status, auxUser.email, auxUser.registerdate, auxUser.firstname, auxUser.lastname, auxUser.birthday, auxUser.shippinginfo, auxUser.creditinfo, auxUser.googleauth, auxUser.userid);
+            } else {
+                return res.status(401).json({
+                    msg: 'Token invalid - user not exists in the DB'
+                })
+            }
 
-        });
+        })
+        .catch(e => console.error(e.stack));
+        let userJSON = user.toJSON();
+    return res.json({
+        userJSON
+    });
 }
 
 //POST
@@ -34,7 +50,6 @@ const userRegister = async (req, res = response) => {
     user.setPassword(bcryptjs.hashSync(user.getPassword(), salt));
 
     //Insert user into database
-    const pool = dbConnection();
     await pool
         .query(insert, user.toList())
         .then(res => {
@@ -59,7 +74,6 @@ const userLogin = async (req, res = response) => {
 
         //Searching user
         let auxUser;
-        const pool = dbConnection();
         await pool
             .query(select, [username])
             .then(res => {
@@ -137,7 +151,6 @@ const userUpdate = async (req, res = response) => {
 
     //Creating user into models
     let auxUser;
-    const pool = dbConnection();
     await pool
         .query(select, [username])
         .then(res => {
@@ -145,7 +158,7 @@ const userUpdate = async (req, res = response) => {
         })
         .catch(e => console.error(e.stack));
 
-    if(typeof auxUser === 'undefined'){
+    if (typeof auxUser === 'undefined') {
         return res.status(206).json({
             msg: 'The username is not in the database'
         })
