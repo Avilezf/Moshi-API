@@ -13,6 +13,8 @@ const pool = dbConnection();
 //Get
 const userGet = async (req = request, res = response) => {
 
+    const token = req.header('x-token');
+
     const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
     //Search user in the database
