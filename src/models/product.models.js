@@ -24,7 +24,7 @@ class Product {
         this.quantity = quantity;
         this.category = category;
         this.rating = rating;
-        this.image = image;
+        
     }
 
     //Getters
