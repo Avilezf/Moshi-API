@@ -26,7 +26,7 @@ const allBooksGet = async (req = request, res = response) => {
                     })
                 }
                 let books = rest.rows[i];
-                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating);
+                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating, books.image);
                 products[i] = product.toJSON()
 
             }
@@ -55,7 +55,7 @@ const categoryBooksGet = async (req = request, res = response) => {
                     })
                 }
                 let books = rest.rows[i];
-                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating);
+                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating, books.image);
                 products[i] = product.toJSON()
 
             }
@@ -83,7 +83,7 @@ const authorBooksGet = async (req = request, res = response) => {
                     })
                 }
                 let books = rest.rows[i];
-                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating);
+                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating, books.image);
                 products[i] = product.toJSON()
 
             }
@@ -111,7 +111,7 @@ const searchBooksGet = async (req = request, res = response) => {
                     })
                 }
                 let books = rest.rows[i];
-                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating);
+                let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating, books.image);
                 products[i] = product.toJSON();
 
             }

@@ -17,15 +17,15 @@ const pool = dbConnection();
 //                                                                                               ADD BOOK
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const addBook = async (req, res = response) => {
-    const { collection, editorial, isbn, title, author, price, quantity, category, rating } = req.body;
-    const product = new Product(0, collection, editorial, isbn, title, author, price, quantity, category, rating);
+    const { collection, editorial, isbn, title, author, price, quantity, category, rating, image } = req.body;
+    const product = new Product(0, collection, editorial, isbn, title, author, price, quantity, category, rating, image);
 
     //Insert book into database
     await pool
         .query(insertQuery, product.toList2())
         .then(rest => {
             console.log(rest.rows[0])
-            return res.json({
+            return res.status(201).json({
                 msg: product.toValue()
             })
         })
@@ -42,7 +42,7 @@ const addBook = async (req, res = response) => {
 const deleteBook = async (req = request, res = response) => {
     const { productid } = req.headers;
     if (typeof productid == 'undefined') {
-        return res.status(500).json({
+        return res.status(400).json({
             msg: 'You must send productid by headers'
         })
     }
@@ -52,7 +52,7 @@ const deleteBook = async (req = request, res = response) => {
         .query(deleteQuery, [productid])
         .then(rest => {
             console.log(rest.rows[0])
-            return res.json({
+            return res.status(200).json({
                 msg: 'Success'
             })
         })
@@ -66,8 +66,8 @@ const deleteBook = async (req = request, res = response) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const editBook = async (req, res = response) => {
 
-    const { productid, collection, editorial, isbn, title, author, price, quantity, category, rating } = req.body;
-    const productUpdate = new Product(productid, collection, editorial, isbn, title, author, price, quantity, category, rating);
+    const { productid, collection, editorial, isbn, title, author, price, quantity, category, rating, image } = req.body;
+    const productUpdate = new Product(productid, collection, editorial, isbn, title, author, price, quantity, category, rating, image);
 
     //Search the product in the database
     let product;
@@ -99,6 +99,8 @@ const editBook = async (req, res = response) => {
     product.setQuantity(productUpdate.getQuantity());
     product.setCategory(productUpdate.getCategory());
     product.setRating(productUpdate.getRating());
+    product.setRating(productUpdate.getRating());
+    product.setImage(productUpdate.getImage());
 
     list = product.toList();
     //Update into database
@@ -106,7 +108,7 @@ const editBook = async (req, res = response) => {
         .query(updateQuery, list)
         .then(rest => {
             console.log(rest.rows[0])
-            return res.json({
+            return res.status(200).json({
                 msg: 'Update Successfull'
             })
         })

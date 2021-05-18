@@ -12,7 +12,7 @@ class Product {
     rating;
     image;
 
-    constructor(productid, collection, editorial, isbn, title, author, price, quantity, category, rating) {
+    constructor(productid, collection, editorial, isbn, title, author, price, quantity, category, rating, image) {
 
         this.productid = productid;
         this.collection = collection;
@@ -24,6 +24,7 @@ class Product {
         this.quantity = quantity;
         this.category = category;
         this.rating = rating;
+        this.image = image;
         
     }
 
@@ -68,6 +69,10 @@ class Product {
         return this.rating;
     }
 
+    getImage() {
+        return this.image;
+    }
+
     //Setters
     setCollection(collection) {
         this.collection = collection;
@@ -105,7 +110,10 @@ class Product {
         this.rating = rating;
     }
 
-    //Value
+    setImage(image) {
+        this.image = image;
+    }
+
     //To JSON
 
     toJSON() {
@@ -119,22 +127,26 @@ class Product {
             price: this.price,
             quantity: this.quantity,
             category: this.category,
-            rating: this.rating
+            rating: this.rating,
+            image: this.image
         }))
 
 
     }
 
+    //Value
     toValue() {
-        return [`productId: ${this.productid}`, `Collection: ${this.collection}`, `Editorial: ${this.editorial}`, `ISBN: ${this.isbn}`, `Title: ${this.title}`, `Author: ${this.author}`, `Price: ${this.price}`, `Quantity: ${this.quantity}`, `Category: ${this.category}`, `Rating:${this.rating}`]
+        return [`productId: ${this.productid}`, `Collection: ${this.collection}`, `Editorial: ${this.editorial}`, `ISBN: ${this.isbn}`, `Title: ${this.title}`, `Author: ${this.author}`, `Price: ${this.price}`, `Quantity: ${this.quantity}`, `Category: ${this.category}`, `Rating: ${this.rating}`, `Image: ${this.image}`]
     }
 
+    //List
     toList() {
-        return [this.productid, this.collection, this.editorial, this.isbn, this.title, this.author, this.price, this.quantity, this.category, this.rating];
+        return [this.productid, this.collection, this.editorial, this.isbn, this.title, this.author, this.price, this.quantity, this.category, this.rating, this.image];
     }
 
+    //List No id
     toList2() {
-        return [this.collection, this.editorial, this.isbn, this.title, this.author, this.price, this.quantity, this.category, this.rating];
+        return [this.collection, this.editorial, this.isbn, this.title, this.author, this.price, this.quantity, this.category, this.rating, this.image];
     }
 
 
