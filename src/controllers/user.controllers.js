@@ -63,8 +63,12 @@ const userRegister = async (req, res = response) => {
             console.log(res.rows[0]);
         })
         .catch(e => console.error(e.stack));
+        
+    const token = await generateJWT(user.getUserId());
     res.json({
-        msg: user.toValue()
+        msg: user.toValue(),
+        resp: 'Usuario Registrado',
+        token
     })
 
 }
@@ -117,7 +121,8 @@ const userLogin = async (req, res = response) => {
 
         res.json({
             msg: user.toValue(),
-            token: token
+            token: token,
+            resp: 'User Login Success'
         })
 
     } catch (e) {
@@ -240,7 +245,7 @@ const userUpdate = async (req, res = response) => {
 
     res.json({
         msg: user.toValue(),
-        status: 'success'
+        status: 'success update'
     });
 
 }

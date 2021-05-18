@@ -140,6 +140,7 @@ class User {
 
     //To JSON
     toJSON() {
+        
         return JSON.parse(JSON.stringify({
             userid: this.userId,
             username: this.username,
