@@ -44,7 +44,7 @@ const categoryBooksGet = async (req = request, res = response) => {
 
     let params = req.params;
 
-    let products = JSON;
+    let products = [];
     await pool
         .query(selectCategory, [params.category])
         .then(rest => {
@@ -72,7 +72,7 @@ const authorBooksGet = async (req = request, res = response) => {
 
     let params = req.params;
 
-    let products = JSON;
+    let products = [];
     await pool
         .query(selectAuthor, [params.author])
         .then(rest => {
@@ -100,7 +100,7 @@ const authorBooksGet = async (req = request, res = response) => {
 const searchBooksGet = async (req = request, res = response) => {
     let params = req.params;
 
-    let products = JSON;
+    let products = [];
     await pool
         .query(selectSearch,[`${params.search}%`])
         .then(rest => {
