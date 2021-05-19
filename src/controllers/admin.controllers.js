@@ -6,9 +6,9 @@ const { dbConnection } = require('../../config/database/config.database');
 
 const selectAdminQuery = 'select * from users where username = $1';
 const searchQuery = 'select * from product where productid = $1';
-const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, author, price, quantity, category, rating) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)';
+const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, author, price, quantity, category, rating, image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 const deleteQuery = 'DELETE FROM product WHERE productid = $1';
-const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, isbn = $4, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10 WHERE productid = $1';
+const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, isbn = $4, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10, image=$11 WHERE productid = $1';
 
 const pool = dbConnection();
 
