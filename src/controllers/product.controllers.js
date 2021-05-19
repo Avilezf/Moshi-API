@@ -15,7 +15,7 @@ const pool = dbConnection();
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const allBooksGet = async (req = request, res = response) => {
 
-    let products = JSON;
+    let products = []
     await pool
         .query(selectAll)
         .then(rest => {
@@ -28,7 +28,7 @@ const allBooksGet = async (req = request, res = response) => {
                 let books = rest.rows[i];
                 let product = new Product(books.productid, books.collection, books.editorial, books.isbn, books.title, books.author, books.price, books.quantity, books.category, books.rating, books.image);
                 products[i] = product.toJSON()
-
+        
             }
         })
         .catch(e => console.error(e.stack));
