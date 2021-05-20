@@ -7,9 +7,9 @@ function dbConnection() {
     try {
         const pool = new Pool({
             connectionString,
-            ssl: {
-                rejectUnauthorized: false
-            }
+            // ssl: {
+            //     rejectUnauthorized: false
+            // }
         })
         console.log('Connected Database')
         return pool;
