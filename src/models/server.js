@@ -11,6 +11,7 @@ class Server {
         this.userPath = '/api/user';
         this.adminPath = '/api/admin';
         this.productPath = '/api/product';
+        this.orderPath = '/api/orders';
         
         //database connection
         this.DBConnection();
@@ -30,6 +31,7 @@ class Server {
         this.app.use(this.userPath, require('../routes/user.routes'));
         this.app.use(this.adminPath, require('../routes/admin.routes'));
         this.app.use(this.productPath, require('../routes/product.routes'));
+        this.app.use(this.orderPath, require('../routes/orders.routes'));
     }
 
     middleware(){
