@@ -6,9 +6,12 @@ const router = Router();
 const { addBook,
     deleteBook,
     editBook,
+    updateOrders,
+    deleteOrders,
     adminLogin} = require('../controllers/admin.controllers');
 const { validation,
     validationJWT,
+    validationOrder,
     validationRole
 } = require('../middleware/index')
 const { verifyBook } = require('../helpers/db-validators');
@@ -37,7 +40,7 @@ router.post('/', [
 ],adminLogin );
 
 router.post('/addBook', [
-    check('collection', 'collection is required').not  ().isEmpty(),
+    check('collection', 'collection is required').not().isEmpty(),
     check('editorial', 'editorial is required').not().isEmpty(),
     check('isbn', 'isbn is required').not().isEmpty(),
     check('title', 'title is required').not().isEmpty(),
@@ -57,6 +60,20 @@ router.delete('/deleteBook',[
     validationRole,
     validation
 ], deleteBook);
+
+router.put('/updateOrders', [
+    validationJWT,
+    validationRole,
+    validationOrder,
+    validation
+],updateOrders);
+
+
+router.delete('/deleteOrders', [
+    validationJWT,
+    validationRole,
+    validation
+],deleteOrders);
 
 
 

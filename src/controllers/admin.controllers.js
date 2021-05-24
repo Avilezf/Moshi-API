@@ -10,7 +10,10 @@ const selectAll = 'select * from order where status = $1';
 const searchQuery = 'select * from product where productid = $1';
 const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, author, price, quantity, category, rating, image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 const deleteQuery = 'DELETE FROM product WHERE productid = $1';
+const deleteQuery2 = 'DELETE FROM orders WHERE orderid = $1';
+const deleteQuery3 = 'DELETE FROM cart WHERE orderid = $1';
 const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, isbn = $4, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10, image=$11 WHERE productid = $1';
+const updateQuery2 = 'UPDATE orders SET status = $2 WHERE orderid = $1';
 
 const pool = dbConnection();
 
@@ -75,7 +78,7 @@ const editBook = async (req, res = response) => {
     let product;
     let list;
     let auxProduct;
-    
+
     await pool
         .query(searchQuery, [productUpdate.getProductId()])
         .then(rest => {
@@ -137,15 +140,76 @@ const getOrders = async (req, res = response) => {
                 let AuxOrders = rest.rows[i];
                 let order = new Orders(AuxOrders.userId, AuxOrders.status, AuxOrders.shippingId, AuxOrders.dateCreated, AuxOrders.dateShipped, AuxOrders.payType, AuxOrders.subtotal, AuxOrders.total);
                 orders[i] = order.toJSON();
-        
+
             }
         })
         .catch(e => console.error(e.stack));
-    
+
     //Show Orders
     res.json({
         orders
     })
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------   ---------------------------------------------------------------------------------
+//                                                                                              UPDATE ORDER
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const updateOrders = async (req, res = response) => {
+    const { orderid, status } = req.headers;
+
+    //Update ORDER into database
+    await pool
+        .query(updateQuery2, [orderid, status])
+        .then(rest => {
+            console.log(rest.rows[0])
+        })
+        .catch(e => {
+            return res.status(500).json({
+                msg: 'Error in the database process please check your settings',
+                err: e.stack
+            })
+        });
+
+    return res.status(202).json({
+        msg: `Order: ${orderid} updated successfully`,
+        status: status
+    })
+
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//                                                                                              DELETE ORDER
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const deleteOrders = async (req, res = response) => {
+    const { orderid } = req.headers;
+
+    if (typeof orderid == 'undefined') {
+        return res.status(400).json({
+            msg: 'You must send the orderid by headers'
+        })
+    }
+
+    //Delete book into database
+    await pool
+        .query(deleteQuery3, [orderid])
+        .then(rest => {
+            console.log(rest.rows[0])
+        })
+        .catch(e => console.error(e.stack));
+
+    await pool
+        .query(deleteQuery2, [orderid])
+        .then(rest => {
+            console.log(rest.rows[0])
+            return res.status(200).json({
+                msg: 'Delete Success'
+            })
+        })
+        .catch(e => console.error(e.stack));
 
 }
 
@@ -217,5 +281,7 @@ module.exports = {
     deleteBook,
     editBook,
     getOrders,
+    updateOrders,
+    deleteOrders,
     adminLogin
 }

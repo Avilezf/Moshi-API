@@ -1,3 +1,4 @@
+const { verify } = require('jsonwebtoken');
 const { dbConnection } = require('../../config/database/config.database');
 
 const findEmail = 'SELECT email FROM users WHERE email = ($1)'
@@ -55,6 +56,7 @@ const verifyBook = async (isbn = '') => {
 
 
 }
+
 
 module.exports = {
     verifyEmail, verifyUsername, verifyBook
