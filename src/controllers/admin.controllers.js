@@ -6,7 +6,7 @@ const { dbConnection } = require('../../config/database/config.database');
 const Orders = require('../models/orders.models');
 
 const selectAdminQuery = 'select * from users where username = $1';
-const selectAll = 'select * from order where status = $1';
+const selectAll = 'select * from orders where status = $1';
 const searchQuery = 'select * from product where productid = $1';
 const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, author, price, quantity, category, rating, image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 const deleteQuery = 'DELETE FROM product WHERE productid = $1';
@@ -127,9 +127,11 @@ const editBook = async (req, res = response) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const getOrders = async (req, res = response) => {
+    let params = req.params;
+
     let orders = []
     await pool
-        .query(selectAll, [0])
+        .query(selectAll, [params.status])
         .then(rest => {
             for (let i = 0; i < rest.rows.length; i++) {
                 if (rest.rows[i] == 'undefined') {
@@ -138,7 +140,7 @@ const getOrders = async (req, res = response) => {
                     })
                 }
                 let AuxOrders = rest.rows[i];
-                let order = new Orders(AuxOrders.userId, AuxOrders.status, AuxOrders.shippingId, AuxOrders.dateCreated, AuxOrders.dateShipped, AuxOrders.payType, AuxOrders.subtotal, AuxOrders.total);
+                let order = new Orders(AuxOrders.orderid, AuxOrders.userid, AuxOrders.status, AuxOrders.shippingid, AuxOrders.datecreated, AuxOrders.dateshipped, AuxOrders.paytype, AuxOrders.subtotal, AuxOrders.total);
                 orders[i] = order.toJSON();
 
             }

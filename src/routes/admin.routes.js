@@ -8,6 +8,7 @@ const { addBook,
     editBook,
     updateOrders,
     deleteOrders,
+    getOrders,
     adminLogin} = require('../controllers/admin.controllers');
 const { validation,
     validationJWT,
@@ -74,6 +75,12 @@ router.delete('/deleteOrders', [
     validationRole,
     validation
 ],deleteOrders);
+
+router.get('/getOrders/:status', [
+    validationJWT,
+    validationRole,
+    validation
+],getOrders);
 
 
 
