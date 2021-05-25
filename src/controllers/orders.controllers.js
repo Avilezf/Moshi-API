@@ -142,7 +142,7 @@ const addOrders = async (req, res = response) => {
                 });
         });
 
-        orders.setOrderId(auxOrderId);
+        orders.setOrderId(auxOrderId.orderid);
 
         return res.status(201).json({
             order: orders.toValue(),
