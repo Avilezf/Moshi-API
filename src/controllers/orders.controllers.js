@@ -142,10 +142,11 @@ const addOrders = async (req, res = response) => {
                 });
         });
 
+        orders.setOrderId(auxOrderId);
+
         return res.status(201).json({
-            msg: orders.toValue(),
-            resp: 'Order Save',
-            order: auxOrderId
+            order: orders.toValue(),
+            resp: 'Order successfully saved'
         })
 
 

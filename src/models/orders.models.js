@@ -63,6 +63,10 @@ class Orders {
     }
 
     //Setters
+    setOrderId(orderId) {
+        this.orderId = orderId;
+    }
+
     setStatus() {
         this.status = status;
     }
