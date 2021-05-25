@@ -1,6 +1,4 @@
 const { response } = require('express');
-const { dbConnection } = require('../../config/database/config.database');
-
 
 const validationRole = (req, res = response, next) => {
 
@@ -10,7 +8,7 @@ const validationRole = (req, res = response, next) => {
         })
     }
 
-    const { role, user} = req.user;
+    const { role} = req.user;
 
     if(role != 3){
         return res.status(401).json({

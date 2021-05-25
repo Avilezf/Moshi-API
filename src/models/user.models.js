@@ -156,8 +156,6 @@ class User {
             creditInfo: this.creditInfo,
             googleAuth: this.googleAuth
         }))
-
-
     }
 
     toValue() {
