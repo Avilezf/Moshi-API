@@ -1,6 +1,4 @@
 node_modules/
+config/database/
 
 .env
-
-moshi-api/
-config/database/config.database.js
