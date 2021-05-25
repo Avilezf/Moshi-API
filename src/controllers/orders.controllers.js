@@ -44,10 +44,7 @@ const addOrders = async (req, res = response) => {
 
         })
         .catch(e => {
-            return res.status(500).json({
-                msg: 'Error in the database process please check your settings',
-                err: e.stack
-            })
+            console.log(e.stack)
         });
 
     let total = shipping.getShippingCost() + subtotal;
@@ -63,10 +60,7 @@ const addOrders = async (req, res = response) => {
             auxOrderId = rest.rows[0];
         })
         .catch(e => {
-            return res.status(500).json({
-                msg: 'Error in the database process please check your settings',
-                err: e.stack
-            })
+            console.log(e.stack)
         });
 
 
@@ -132,10 +126,7 @@ const addOrders = async (req, res = response) => {
                     console.log('Update product: ' + product.productId);
                 })
                 .catch(e => {
-                    return res.status(500).json({
-                        msg: 'Error in the database process please check your settings',
-                        err: e.stack
-                    })
+                    console.log(e.stack)
                 });
 
 
@@ -147,10 +138,7 @@ const addOrders = async (req, res = response) => {
                     console.log('Insert on: ' + auxOrderId.orderid);
                 })
                 .catch(e => {
-                    return res.status(500).json({
-                        msg: 'Error in the database process please check your settings',
-                        err: e.stack
-                    })
+                    console.log(e.stack)
                 });
         });
 
