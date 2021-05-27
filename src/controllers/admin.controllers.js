@@ -7,12 +7,12 @@ const Orders = require('../models/orders.models');
 
 const selectAdminQuery = 'select * from users where username = $1';
 const selectAll = 'select * from orders where status = $1';
-const searchQuery = 'select * from product where productid = $1';
+const searchQuery = 'select * from product where isbn = $1';
 const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, author, price, quantity, category, rating, image) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
 const deleteQuery = 'DELETE FROM product WHERE productid = $1';
 const deleteQuery2 = 'DELETE FROM orders WHERE orderid = $1';
 const deleteQuery3 = 'DELETE FROM cart WHERE orderid = $1';
-const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, isbn = $4, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10, image=$11 WHERE productid = $1';
+const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10 WHERE productid = $1';
 const updateQuery2 = 'UPDATE orders SET status = $2 WHERE orderid = $1';
 
 const pool = dbConnection();
@@ -45,8 +45,8 @@ const addBook = async (req, res = response) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const deleteBook = async (req = request, res = response) => {
-    const { productid } = req.headers;
-    if (typeof productid == 'undefined') {
+    const { isbn } = req.headers;
+    if (typeof isbn == 'undefined') {
         return res.status(400).json({
             msg: 'You must send productid by headers'
         })
@@ -54,11 +54,11 @@ const deleteBook = async (req = request, res = response) => {
 
     //Delete book into database
     await pool
-        .query(deleteQuery, [productid])
+        .query(deleteQuery, [isbn])
         .then(rest => {
             console.log(rest.rows[0])
             return res.status(200).json({
-                msg: 'Success'
+                msg: 'Delete Successfull'
             })
         })
         .catch(e => console.error(e.stack));
@@ -80,7 +80,7 @@ const editBook = async (req, res = response) => {
     let auxProduct;
 
     await pool
-        .query(searchQuery, [productUpdate.getProductId()])
+        .query(searchQuery, [productUpdate.getISBN()])
         .then(rest => {
             auxProduct = rest.rows[0];
             console.log(auxProduct)
@@ -97,15 +97,13 @@ const editBook = async (req, res = response) => {
     //Update into models
     product.setCollection(productUpdate.getCollection());
     product.setEditorial(productUpdate.getEditorial());
-    product.setISBN(productUpdate.getISBN());
     product.setTitle(productUpdate.getTitle());
     product.setAuthor(productUpdate.getAuthor());
     product.setPrice(productUpdate.getPrice());
     product.setQuantity(productUpdate.getQuantity());
     product.setCategory(productUpdate.getCategory());
     product.setRating(productUpdate.getRating());
-    product.setRating(productUpdate.getRating());
-    product.setImage(productUpdate.getImage());
+
 
     list = product.toList();
     //Update into database
