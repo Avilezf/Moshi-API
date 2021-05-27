@@ -12,7 +12,7 @@ const insertQuery = 'INSERT INTO product (collection, editorial, isbn, title, au
 const deleteQuery = 'DELETE FROM product WHERE productid = $1';
 const deleteQuery2 = 'DELETE FROM orders WHERE orderid = $1';
 const deleteQuery3 = 'DELETE FROM cart WHERE orderid = $1';
-const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, title = $5, author = $6, price = $7, quantity = $8, category = $9, rating = $10 WHERE productid = $1';
+const updateQuery = 'UPDATE product SET collection = $2, editorial = $3, title = $4, author = $5, price = $6, quantity = $7, category = $8, rating = $9 WHERE productid = $1';
 const updateQuery2 = 'UPDATE orders SET status = $2 WHERE orderid = $1';
 
 const pool = dbConnection();
@@ -45,8 +45,8 @@ const addBook = async (req, res = response) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const deleteBook = async (req = request, res = response) => {
-    const { isbn } = req.headers;
-    if (typeof isbn == 'undefined') {
+    const { productid } = req.headers;
+    if (typeof productid == 'undefined') {
         return res.status(400).json({
             msg: 'You must send productid by headers'
         })
@@ -54,14 +54,19 @@ const deleteBook = async (req = request, res = response) => {
 
     //Delete book into database
     await pool
-        .query(deleteQuery, [isbn])
+        .query(deleteQuery, [productid])
         .then(rest => {
             console.log(rest.rows[0])
             return res.status(200).json({
                 msg: 'Delete Successfull'
             })
         })
-        .catch(e => console.error(e.stack));
+        .catch(e => {
+            return res.status(200).json({
+                msg: 'Imposible to delete FKey Associated. Contact the Admin',
+                error: e.stack  
+            })
+        });
 
 }
 
@@ -71,7 +76,8 @@ const deleteBook = async (req = request, res = response) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const editBook = async (req, res = response) => {
 
-    const { productid, collection, editorial, isbn, title, author, price, quantity, category, rating, image } = req.body;
+    const { productid } = req.headers;
+    const { collection, editorial, isbn, title, author, price, quantity, category, rating, image } = req.body;
     const productUpdate = new Product(productid, collection, editorial, isbn, title, author, price, quantity, category, rating, image);
 
     //Search the product in the database
@@ -105,7 +111,7 @@ const editBook = async (req, res = response) => {
     product.setRating(productUpdate.getRating());
 
 
-    list = product.toList();
+    list = [product.getProductId(), product.getCollection(), product.getEditorial(), product.getTitle(), product.getAuthor(), product.getPrice(), product.getQuantity(), product.getCategory(), product.getRating()];
     //Update into database
     await pool
         .query(updateQuery, list)

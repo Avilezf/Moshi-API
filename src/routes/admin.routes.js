@@ -19,10 +19,8 @@ const { verifyBook } = require('../helpers/db-validators');
 
 
 router.put('/editBook/:productid', [
-    check('productid', 'product is required').not().isEmpty(),
     check('collection', 'collection is required').not().isEmpty(),
     check('editorial', 'editorial is required').not().isEmpty(),
-    check('isbn', 'isbn is required').not().isEmpty(),
     check('title', 'title is required').not().isEmpty(),
     check('author', 'author is required').not().isEmpty(),
     check('price', 'price is required').not().isEmpty(),
